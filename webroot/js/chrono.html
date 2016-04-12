@@ -1,0 +1,68 @@
+<html>
+<body>
+
+<p id="chrono"></p>
+<input type="button" id="+" value="+" onclick="augmenter();">
+<input type="button" id="-" value="-" onclick="diminuer();">
+<input type="button" id="start" value="Lancer" onclick="lancer();">
+<script>
+var min = 0;
+var sec = 0;
+afficherTemps();
+
+function afficherTemps() {
+  var minutes = min;
+  var secondes = sec;
+  if(minutes < 10) {
+    minutes = "0" + min;
+  }
+  if(sec < 10) {
+    secondes = "0" + sec;
+  }
+  document.getElementById('chrono').innerHTML = minutes + ":" + secondes;
+}
+
+function augmenter() {
+  sec += 5;
+  if(sec > 55) {
+    min++;
+    sec = 0;
+  }
+  afficherTemps();
+}
+
+function diminuer() {
+  if(min == 0 && sec == 0) {
+
+  }
+  else {
+    sec -= 5;
+    if(sec < 0) {
+      sec = 55;
+      min--;
+    }
+    afficherTemps();
+  }
+}
+
+function lancer() {
+   timer = setInterval(decompter, 1000);
+}
+
+function decompter() {
+  var temps = min * 60 + sec;
+  if(temps > 0) {
+    sec--;
+    if(sec < 0 && min > 0) {
+      min--;
+      sec = 59;
+    }
+    afficherTemps();
+  }
+  if(temps == 0) {
+    clearInterval(timer);
+  }
+}
+</script>
+</body>
+</html>
