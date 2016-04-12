@@ -1,2 +1,0 @@
-# gomuscu
-# gomuscu
