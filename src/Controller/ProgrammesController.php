@@ -133,6 +133,33 @@ class ProgrammesController extends AppController
   {
     $user = $this->Auth->user('id');
     $programmes = TableRegistry::get('Programmes');
+
+    $verifOwnerProg = $programmes->get($id);
+    if($verifOwnerProg->user_id == $user) {
+
+      //Liste des exercices disponibles
+      $this->loadModel('Exercices');
+      $reqListeExos = $this->Exercices->find('all');
+      foreach($reqListeExos as $reqlisteExo):
+        $listeExo[$reqlisteExo['denomination']] = $reqlisteExo['denomination'];
+        $listeExoJs[] = $reqlisteExo['denomination']; //Permet le transfert de l'array du Php vers JS par le JSON
+      endforeach;
+
+      //Recherche des données du programme à modifier
+      $programmeAModifier = $programmes->find('all', ['contain' => 'Detailsprogrammes']);
+      $programmeAModifier->where(['id' => $id]);
+
+
+      //Transmission à la vue
+      $data = [
+        'listeExo' => $listeExo,
+        'listeExoJs' => $listeExoJs,
+        'user' => $user,
+        'programmeAModifier' => $programmeAModifier
+      ];
+
+      $this->set($data);
+    }
   }
 }
 ?>
